@@ -54,23 +54,23 @@ Hadoop in Industries:
         - Key-Value store (retrieve)
   [//]: <> (Hive是数据仓库工具，Pig是大数据分析平台，为用户提供多种接口，	HDFS是Hadoop的分布式文件系统(Distributed File System ，HBase是一个分布式的、面向列的开源数据库。)
   
-  A simple question 
-  -> What if the input is a big file = 1T?
-  -> Can we process it with one machine? 
-  -> No! Out of memory; too slow 
-  -> What should we do? 
-  -> Use multiple machines 
-  -> Issues may be caused by multiple machines? 
-  -> Node failure, data skew /* 某个key非常火，这台机器承载不过来) */ ,... 
-  -> MapReduce comes out!
+  A simple question <br/>
+  -> What if the input is a big file = 1T? <br/>
+  -> Can we process it with one machine? <br/>
+  -> No! Out of memory; too slow <br/>
+  -> What should we do? <br/>
+  -> Use multiple machines <br/>
+  -> Issues may be caused by multiple machines? <br/>
+  -> Node failure, data skew /* 某个key非常火，这台机器承载不过来) */ ,... <br/>
+  -> MapReduce comes out!<br/>
   
   /*
-  数据倾斜是一个在MapReduce中可能会出现的问题，共有以下几种解决方案
-1、增加jvm内存,这适用于第一种情况'唯一值非常少，极少数值有非常多的记录值(唯一值少于几千)',这种情况下,往往只能通过硬件的手段来进行调优,增加jvm内存可以显著的提高运行效率。
-2、增加reduce的个数,这适用于第二种情况(唯一值比较多，这个字段的某些值有远远多于其他值的记录数，但是它的占比也小于百分之一或千分之一),我们知道,这种情况下,最容易造成的结果就是大量相同key被partition到一个分区,从而一个reduce执行了大量的工作,而如果我们增加了reduce的个数,这种情况相对来说会减轻很多,毕竟计算的节点多了,就算工作量还是不均匀的,那也要小很多。
-3、自定义分区,这需要用户自己继承partition类,指定分区策略,这种方式效果比较显著。
-4、重新设计key,有一种方案是在map阶段时给key加上一个随机数,有了随机数的key就不会被大量的分配到同一节点(小几率),待到reduce后再把随机数去掉即可。
-5、使用combinner合并,combinner是在map阶段,reduce之前的一个中间阶段,在这个阶段可以选择性的把大量的相同key数据先进行一个合并,可以看做是local reduce,然后再交给reduce来处理,这样做的好处很多,即减轻了map端向reduce端发送的数据量(减轻了网络带宽),也减轻了map端和reduce端中间的shuffle阶段的数据拉取数量(本地化磁盘IO速率),推荐使用这种方法。
+  数据倾斜是一个在MapReduce中可能会出现的问题，共有以下几种解决方案 <br/>
+  1. 增加jvm内存,这适用于第一种情况'唯一值非常少，极少数值有非常多的记录值(唯一值少于几千)',这种情况下,往往只能通过硬件的手段来进行调优,增加jvm内存可以显著的提高运行效率。
+  2. 增加reduce的个数,这适用于第二种情况(唯一值比较多，这个字段的某些值有远远多于其他值的记录数，但是它的占比也小于百分之一或千分之一),我们知道,这种情况下,最容易造成的结果就是大量相同key被partition到一个分区,从而一个reduce执行了大量的工作,而如果我们增加了reduce的个数,这种情况相对来说会减轻很多,毕竟计算的节点多了,就算工作量还是不均匀的,那也要小很多。
+  3. 自定义分区,这需要用户自己继承partition类,指定分区策略,这种方式效果比较显著。
+  4. 重新设计key,有一种方案是在map阶段时给key加上一个随机数,有了随机数的key就不会被大量的分配到同一节点(小几率),待到reduce后再把随机数去掉即可。
+  5. 使用combinner合并,combinner是在map阶段,reduce之前的一个中间阶段,在这个阶段可以选择性的把大量的相同key数据先进行一个合并,可以看做是local reduce,然后再交给reduce来处理,这样做的好处很多,即减轻了map端向reduce端发送的数据量(减轻了网络带宽),也减轻了map端和reduce端中间的shuffle阶段的数据拉取数量(本地化磁盘IO速率),推荐使用这种方法。
   */
   
   #### MapReduce ####
@@ -83,7 +83,9 @@ Hadoop in Industries:
         - A stage: Combines data from Mapper
         - [Implementation](https://hadoop.apache.org/docs/r2.6.2/api/org/apache/hadoop/mapreduce/Reducer.html):Simplify your work
    + example<br/>
-    ```// inputKey: offset
+   
+   <pre name = "code" class="java">
+    // inputKey: offset
     // inputValue: line : I love big data
     // split into words -> lookup each word in sentiment library
     // outputKey: sentiment
@@ -94,7 +96,8 @@ Hadoop in Industries:
              String emotion = emotionLibrary.get(word.toLowerCase());
              context.write(new Text(emotion), new IntWritable(1));
          }
-    }```
+    }
+    </pre> 
     
    
         
