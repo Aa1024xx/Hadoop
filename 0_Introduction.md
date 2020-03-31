@@ -42,7 +42,7 @@ Hadoop in Industries:
  
  #### Pipeline ####
   Now the data is coming in, what is the first thing to do?<br/>
-  --> Storage on multiple machines
+  -> Storage on multiple machines
   + HDFS
         - **Data Storage:** Data Split, Data Replication
         - All you care about is the path of file: /hdfs/input/doc1.txt (HDFS Data  Distribution)
@@ -52,7 +52,7 @@ Hadoop in Industries:
   + HBase
         - HBase is an open source, non-relational, distributed database
         - Key-Value store (retrieve)
-  [//]: <> (Hive是数据仓库工具，Pig是大数据分析平台，为用户提供多种接口，	HDFS是Hadoop的分布式文件系统(Distributed File System ，HBase是一个分布式的、面向列的开源数据库。)
+ /* Hive是数据仓库工具，Pig是大数据分析平台，为用户提供多种接口，	HDFS是Hadoop的分布式文件系统(Distributed File System ，HBase是一个分布式的、面向列的开源数据库。*/
   
   A simple question <br/>
   -> What if the input is a big file = 1T? <br/>
@@ -85,6 +85,7 @@ Hadoop in Industries:
    + example<br/>
    
    <pre name = "code" class="java">
+    // map 进新数据每次调用 || set up 调用一次
     // inputKey: offset
     // inputValue: line : I love big data
     // split into words -> lookup each word in sentiment library
@@ -99,6 +100,22 @@ Hadoop in Industries:
     }
     </pre> 
     
+   <pre name = "code" class="java">
+   // setup 建立 emotionLibrary
+    public void setup(Context context) throws IOException{
+        // String path = "xxx";
+        String path = context.getConfiguration().get("dictionary");
+        BufferedReader bufferedReader = new BufferedReader(new FileReader(path));
+        String line = bufferedReader.readLine();
+        while (line != null){
+             //line: happy\tpositive
+             String[] word_emotion = line.split("\t");
+             emotionLibrary.put(word_emotion[0].toLowerCase(), word_emotion[1]);
+             line = bufferedReader.readLine();
+        }
+        bufferedReader.close();
+    }
+   </pre> 
    
         
   
