@@ -163,8 +163,7 @@ Hadoop in Industries:
          if 内存 >= 8GB 且 愿意安装双系统 :
 
             安装 ubuntu 双系统， 在ubuntu 下进行操作
-
          else :
-    
             使用 digitalocean 服务器, ssh 连接上去操作 
-         </pre>
+            
+        </pre>
