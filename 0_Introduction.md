@@ -52,6 +52,7 @@ Hadoop in Industries:
   + HBase
         - HBase is an open source, non-relational, distributed database
         - Key-Value store (retrieve)
+        
  /* Hive是数据仓库工具，Pig是大数据分析平台，为用户提供多种接口，	HDFS是Hadoop的分布式文件系统(Distributed File System ，HBase是一个分布式的、面向列的开源数据库。*/
   
   A simple question <br/>
@@ -117,6 +118,53 @@ Hadoop in Industries:
     }
    </pre> 
    
+   + Shuffle (Iterators)
+        - Transport
+        - Sort
+        - Map in parallel, Reduce in parallel
+   
+   <pre name = "code" class="java">
+    public static class SentimentCollection extends Reducer<Text, IntWritable, Text, IntWritable>{
+       @Override
+       public void reduce(Text key, Iterable<IntWritable>values, Context context)
+                throws IOException, InterruptedException {
+                //inputKey: positive
+                //inputValue: <1, 1, 1...>
+                //sum(inputValue)
+                int sum = 0;
+                for (IntWritable value: values) {
+                    sum += value.get();
+                }
+                
+                context.write(key, new IntWritable(sum));
+                }
+    }
+   </pre> 
         
+  + Advantages of hadoop? Performance
+        - **Throughout**: Run computation in parallel
+        - **Scalability**: Store and distribute very large data sets across clusters of hundreds of inexpensive servers operating in parallel
+        - **Reliability**: Even if individual nodes experience high rates of failure when running jobs on a large cluster, data is replicated across a cluster so that it can be recovered easily in the face of disk, node or rack failures.
+        - **Cheap**: Cluster of inexpensive servers.
   
-       
+   + Install MapReduce on Docker
+        - Mac user: 
+        <pre name = "code">
+        if 内存 >= 8GB :
+
+            直接装 docker for mac ，之后参考 Mac 版本教程
+
+        else:
+    
+            使用 digitalocean 服务器, ssh 连接上去操作
+        </pre> 
+        - Windows user:
+         <pre name = "code">
+         if 内存 >= 8GB 且 愿意安装双系统 :
+
+            安装 ubuntu 双系统， 在ubuntu 下进行操作
+
+         else :
+    
+            使用 digitalocean 服务器, ssh 连接上去操作 
+         </pre>
