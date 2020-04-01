@@ -23,7 +23,7 @@ dockerfile <br/>
 
 
 进入hadoop集群<br/>
-<pre="code">
+<pre name = "code">
 $ cd bigdata-class2
 $ cd hadoop-cluster-docker
 $ sudo ./start-container.sh
